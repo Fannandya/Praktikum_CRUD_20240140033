@@ -24,17 +24,15 @@ public class UserServiceImpl implements UserService {
     private ValidationUtil validationUtil;
 
     @Override
-    public UserDto AddUser(UserAddRequest request) {
+    public UserDto addUser(UserAddRequest request) {
         validationUtil.validate(request);
 
         User saveUser = User.builder()
+                .id(UUID.randomUUID().toString())
                 .name(request.getName())
                 .age(request.getAge())
                 .build();
-//        .setId(UUID.randomUUID().toString());
-//        .setName(request.getName());
-//        .setAge(request.getAge());
-//        builder();
+
 
         userRepository.save(saveUser);
 
@@ -59,7 +57,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto UpdateUser(String id, UserAddRequest request) {
+    public UserDto updateUser(String id, UserAddRequest request) {
         validationUtil.validate(request);
 
         User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
@@ -75,7 +73,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void DeleteUser(String id) {
+    public void deleteUser(String id) {
         User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
         userRepository.deleteById(id);
     }

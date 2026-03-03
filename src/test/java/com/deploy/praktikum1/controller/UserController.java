@@ -13,60 +13,54 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/users")
 public class UserController {
+
     @Autowired
     private UserService userService;
 
     @PostMapping(
-            path = "/api/users",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Map<String, Object>> AddUser(@RequestBody UserAddRequest request) {
-        UserDto result = userService.AddUser(request);
+    public ResponseEntity<Map<String, Object>> addUser(@RequestBody UserAddRequest request) {
+        UserDto result = userService.addUser(request); // Pastikan nama method di service pake camelCase
         return ResponseEntity.status(HttpStatus.CREATED).body(Map.of(
                 "message", "User created successfully",
                 "data", result
         ));
     }
-}
 
-@GetMapping(
-        path = "/api/users",
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
-public ResponseEntity<Map<String, Object>> getAllUser() {
-    List<UserDto> result = UserService.GetAllUser();
-    return ResponseEntity.ok(Map.of(
-            "message", "Get all user successfully",
-            "data", result
-    ));
-}
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> getAllUser() {
+        List<UserDto> result = userService.getAllUser();
+        return ResponseEntity.ok(Map.of(
+                "message", "Get all user successfully",
+                "data", result
+        ));
+    }
 
-@PutMapping(
-        path = "/api/users/{id}",
-        consumes = MediaType.APPLICATION_JSON_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
-public ResponseEntity<Map<String, Object>> updateUser(
-        @PathVariable String id,
-        @RequestBody UserAddRequest request
-    ) {
-    UserDto result = UserService.UpdateUser(id, request);
-    return ResponseEntity.status(HttpStatus.OK).body(Map.of(
-            "status", "success",
-            "data", result
-    ));
-
-    @DeleteMapping(
-        path = "/api/users/{id}",
-        produces = MediaType.APPLICATION_JSON_VALUE
+    @PutMapping(
+            path = "/{id}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity<Map<String, Object>> DeleteUser(@PathVariable("id") String id){
-        UserService.DeleteUser(id);
+    public ResponseEntity<Map<String, Object>> updateUser(
+            @PathVariable String id,
+            @RequestBody UserAddRequest request
+    ) {
+        UserDto result = userService.updateUser(id, request);
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of(
+                "status", "success",
+                "data", result
+        ));
+    }
+
+    @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Map<String, Object>> deleteUser(@PathVariable("id") String id) {
+        userService.deleteUser(id);
         return ResponseEntity.status(HttpStatus.OK).body(Map.of(
                 "status", "success delete user with id " + id
         ));
     }
-
 }
