@@ -1,2 +1,2 @@
 EndPoint Homepage
-![tampilan homepage](ss.png)
+![tampilan homepage](ss/ss.png)
