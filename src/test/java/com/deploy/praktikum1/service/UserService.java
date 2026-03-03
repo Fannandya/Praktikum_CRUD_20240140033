@@ -9,6 +9,6 @@ public interface UserService {
     UserDto AddUser(UserAddRequest userAddRequest);
     List<UserDto> getAllUser();
     UserDto getUserById(String id);
-    UserDto updateUser(String id, UserAddRequest userAddRequest);
-    void deleteUserById(String id);
+    UserDto UpdateUser(String id, UserAddRequest request);
+    void DeleteUser(String id);
 }

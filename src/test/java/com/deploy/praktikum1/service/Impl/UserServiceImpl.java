@@ -27,11 +27,14 @@ public class UserServiceImpl implements UserService {
     public UserDto AddUser(UserAddRequest request) {
         validationUtil.validate(request);
 
-        User saveUser = User.UserBuilder();
-        saveUser.setId(UUID.randomUUID().toString());
-        saveUser.setName(request.getName());
-        saveUser.setAge(request.getAge());
-        saveUser.build();
+        User saveUser = User.builder()
+                .name(request.getName())
+                .age(request.getAge())
+                .build();
+//        .setId(UUID.randomUUID().toString());
+//        .setName(request.getName());
+//        .setAge(request.getAge());
+//        builder();
 
         userRepository.save(saveUser);
 
@@ -60,11 +63,12 @@ public class UserServiceImpl implements UserService {
         validationUtil.validate(request);
 
         User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
-        User user = User.UserBuilder();
-        user.setId(existingUser.getId());
-        user.setName(request.getName());
-        user.setAge(request.getAge());
-        user.build();
+
+        User user = User.builder()
+                .id(existingUser.getId())
+                .name(request.getName())
+                .age(request.getAge())
+                .build();
 
         userRepository.save(user);
         return UserMapper.MAPPER.toUserDto(user);
